@@ -1,0 +1,18 @@
+{
+  "name": "webdriverio-jquery",
+  "version": "0.0.1",
+  "description": "This project extends webdriverio's API with a jQuery like interface.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Michael Leaney <leahcimic@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "webdriverio": "git+ssh://git@github.com:leahciMic/webdriverio.git#allow-addCommand-to-disable-callback"
+  },
+  "devDependencies": {
+    "bluebird": "^2.9.34",
+    "jasmine": "^2.3.2"
+  }
+}
