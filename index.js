@@ -1,15 +1,29 @@
 var webdriverio = require('webdriverio');
 var remote = webdriverio.remote.bind(webdriverio);
+var isObject = require('lodash.isobject');
+var bluebird = require('bluebird');
+
+var blank = function(v) {
+  return v !== '';
+};
 
 var createAPI = function(self, element) {
   return {
     text: function() {
       return self.elementIdText(element).then(function(e) {
+        if (e.value.filter) {
+          return e.value.filter(blank);
+        }
         return e.value;
       });
     },
-    attr: function() {
-      return self.elementIdAttribute(element);
+    attr: function(attrName) {
+      return self.elementIdAttribute(element, attrName).then(function(e) {
+        if (e.value.filter) {
+          return e.value.filter(blank);
+        }
+        return e.value;
+      });
     },
     find: function() {
       return self.elementIdElements(element);
@@ -26,7 +40,11 @@ var oneOrMany = function(client, fn, extractValue) {
     if (wElem.value instanceof Array) {
       return client.unify(
         wElem.value.map(function(elem) {
-          return fn.call(client, elem.ELEMENT);
+          var value = fn.call(client, elem.ELEMENT);
+          if (!value.then && isObject(value)) {
+            return bluebird.props(value);
+          }
+          return value;
         }),
         {
           extractValue: extractValue
@@ -45,6 +63,11 @@ module.exports = function(config) {
   client.addCommand('text', function() {
     return oneOrMany(this, function(element) {
       return this.elementIdText(element);
+    }).then(function(v) {
+      if (v.filter) {
+        return v.filter(blank);
+      }
+      return v;
     });
   });
 
@@ -62,7 +85,12 @@ module.exports = function(config) {
     var self = this;
     return oneOrMany(this, function(element) {
       return iteratorFn(createAPI(self, element));
-    }, false);
+    }, false).then(function(values) {
+      if (values.filter) {
+        return values.filter(blank);
+      }
+      return values;
+    });
   }, false, true);
 
   client.addCommand('each', function(iteratorFn) {

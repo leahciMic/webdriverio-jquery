@@ -13,6 +13,7 @@
   "author": "Michael Leaney <leahcimic@gmail.com>",
   "license": "ISC",
   "dependencies": {
+    "lodash.isobject": "^3.0.2",
     "webdriverio": "git+ssh://git@github.com:leahciMic/webdriverio.git#allow-addCommand-to-disable-callback"
   },
   "devDependencies": {

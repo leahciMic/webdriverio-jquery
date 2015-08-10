@@ -68,7 +68,7 @@ describe('webdriverio-jquery', function() {
   });
 
   describe('map', function() {
-    fit('should be able to map over elements', function(done) {
+    it('should be able to map over elements', function(done) {
       var texts = [];
       client.find('li').map(function(element) {
         return element.text();
@@ -77,5 +77,22 @@ describe('webdriverio-jquery', function() {
         done();
       });
     });
+
+    it('should be able to map over elements', function(done) {
+      var texts = [];
+      client.find('li').map(function(element) {
+        return {
+          text: element.text(),
+          fooAttr: element.attr('foo')
+        };
+      }).then(function(value) {
+        expect(value).toEqual([
+          {text: 'List items', fooAttr: 'bar'},
+          {text: 'Inputs', fooAttr: 'foobar'}
+        ]);
+        done();
+      });
+    });
   });
+
 });
