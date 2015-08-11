@@ -29,3 +29,7 @@ Iterate over each element.
 ## map()
 
 Map over each element.
+
+## href()
+
+Alias for attr('href').

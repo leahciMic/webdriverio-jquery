@@ -20,6 +20,30 @@ describe('webdriverio-jquery', function() {
     client.end().then(done);
   });
 
+  describe('find > find', function() {
+    it('should work', function(done) {
+      client.find('ul').find('li').find('a').href().then(function(hrefs) {
+        expect(hrefs).toEqual([
+          'http://foo.bar/',
+          'http://bar.foo/'
+        ]);
+        done();
+      });
+    });
+  });
+
+  describe('attr', function() {
+    it('should work with multiple elements', function(done) {
+      client.find('li a').href().then(function(hrefs) {
+        expect(hrefs).toEqual([
+          'http://foo.bar/',
+          'http://bar.foo/'
+        ]);
+        done();
+      });
+    });
+  });
+
   describe('text', function() {
     it('should be able to get multiple text', function(done) {
       client.find('li').text().then(function(text) {

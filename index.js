@@ -25,8 +25,11 @@ var createAPI = function(self, element) {
         return e.value;
       });
     },
-    find: function() {
-      return self.elementIdElements(element);
+    find: function(selector) {
+      return self.elementIdElements(element, selector);
+    },
+    href: function() {
+      return this.attr('href');
     }
   };
 };
@@ -37,9 +40,22 @@ var oneOrMany = function(client, fn, extractValue) {
   }
 
   return client.lastPromise.then(function(wElem) {
+    if (wElem.value === null) {
+      return fn.call(client, null);
+    }
+
+    if (wElem.value === undefined) {
+      wElem = {
+        value: wElem
+      };
+    }
+
     if (wElem.value instanceof Array) {
       return client.unify(
         wElem.value.map(function(elem) {
+          if (elem instanceof Array && elem.length === 1) {
+            elem = elem[0];
+          }
           var value = fn.call(client, elem.ELEMENT);
           if (!value.then && isObject(value)) {
             return bluebird.props(value);
@@ -50,8 +66,6 @@ var oneOrMany = function(client, fn, extractValue) {
           extractValue: extractValue
         }
       );
-    } else {
-      return fn(wElem.value.ELEMENT);
     }
   });
 };
@@ -71,6 +85,10 @@ module.exports = function(config) {
     });
   });
 
+  client.addCommand('href', function() {
+    return this.attr('href');
+  });
+
   client.addCommand('attr', function(customVar) {
     return oneOrMany(this, function(element) {
       return this.elementIdAttribute(element, customVar);
@@ -78,6 +96,22 @@ module.exports = function(config) {
   });
 
   client.addCommand('find', function(customVar) {
+    return oneOrMany(this, function(element) {
+      if (element === null) {
+        return this.elements(customVar).then(function(z) {
+          if (z.length === 1) {
+            return z[0];
+          }
+          return z;
+        });
+      }
+      return this.elementIdElements(element, customVar).then(function(z) {
+        if (z.length === 1) {
+          return z[0];
+        }
+        return z;
+      });
+    });
     return this.elements(customVar);
   });
 
