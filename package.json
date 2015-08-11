@@ -1,6 +1,6 @@
 {
   "name": "webdriverio-jquery",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "This project extends webdriverio's API with a jQuery like interface.",
   "repository": {
     "type": "git",
