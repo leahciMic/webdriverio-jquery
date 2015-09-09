@@ -40,7 +40,7 @@ var oneOrMany = function(client, fn, extractValue) {
   }
 
   return client.lastPromise.then(function(wElem) {
-    if (wElem.value === null) {
+    if (wElem === undefined || wElem.value === null) {
       return fn.call(client, null);
     }
 
