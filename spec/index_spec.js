@@ -20,6 +20,14 @@ describe('webdriverio-jquery', function() {
     client.end().then(done);
   });
 
+  it('first should work', function(done) {
+    var d = client.find('li').first().text();
+    d.then(function(text) {
+      expect(text).toEqual('List items');
+      done();
+    });
+  });
+
   describe('find > find', function() {
     it('should work', function(done) {
       client.find('ul').find('li').find('a').href().then(function(hrefs) {

@@ -85,6 +85,25 @@ module.exports = function(config) {
     });
   });
 
+  client.addCommand('first', function() {
+    var self = this;
+    return this.lastPromise = client.unify(
+      this.lastPromise.then(function(wElem) {
+        if (wElem.value instanceof Array) {
+          wElem.value = [wElem.value[0]];
+        }
+        return wElem;
+      }), {extractValue: true}
+    ).then(function(data) {
+      console.log(data.find, 'data');
+      return data;
+    })
+    .catch(function(err) {
+      console.log(err);
+      console.log(err.stack);
+    });
+  });
+
   client.addCommand('href', function() {
     return this.attr('href');
   });

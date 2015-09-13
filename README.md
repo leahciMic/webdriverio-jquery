@@ -1,7 +1,5 @@
 # webdriverio-jquery Extended API
 
-WARNING: This is still a work in progress, and shouldn't be taken seriously.
-
 webdriverio-jquery extends webdriverio's API with the following commands:
 
 * find(selector=String)
@@ -9,6 +7,7 @@ webdriverio-jquery extends webdriverio's API with the following commands:
 * text()
 * each(iteratorFn=Function)
 * map(iteratorFn=Function)
+* first()
 
 ## find(selector=string)
 
@@ -33,3 +32,7 @@ Map over each element.
 ## href()
 
 Alias for attr('href').
+
+## first()
+
+Returns the first element of a collection.
