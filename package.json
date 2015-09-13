@@ -14,10 +14,10 @@
   "license": "ISC",
   "dependencies": {
     "lodash.isobject": "^3.0.2",
+    "bluebird": "^2.9.34",
     "webdriverio": "git+ssh://git@github.com:leahciMic/webdriverio.git#allow-addCommand-to-disable-callback"
   },
   "devDependencies": {
-    "bluebird": "^2.9.34",
     "jasmine": "^2.3.2"
   }
 }

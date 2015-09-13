@@ -94,14 +94,7 @@ module.exports = function(config) {
         }
         return wElem;
       }), {extractValue: true}
-    ).then(function(data) {
-      console.log(data.find, 'data');
-      return data;
-    })
-    .catch(function(err) {
-      console.log(err);
-      console.log(err.stack);
-    });
+    );
   });
 
   client.addCommand('href', function() {
